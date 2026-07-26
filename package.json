@@ -1,0 +1,29 @@
+{
+  "name": "milanam",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "agora-access-token": "^2.0.4",
+    "agora-rtc-sdk-ng": "^4.24.6",
+    "bcryptjs": "^3.0.3",
+    "date-fns": "^4.4.0",
+    "mongoose": "^9.8.0",
+    "next": "^16.2.11",
+    "next-auth": "^4.24.15",
+    "react": "19.2.4",
+    "react-big-calendar": "^1.20.0",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.11",
+    "tailwindcss": "^4"
+  }
+}

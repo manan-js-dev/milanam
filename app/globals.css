@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  --ink: #1A1A2E;
+  --paper: #F5F6FA;
+  --indigo: #2E3192;
+  --violet: #6A3FA0;
+  --purple: #9B4FC7;
+  --signal: #C1443C;
+  --line: #E2E1EA;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Inter', ui-sans-serif, sans-serif;
+}
+
+.font-display {
+  font-family: 'Fraunces', serif;
+}
+
+.rbc-today {
+  background-color: #F1EEFC;
+}
+.rbc-event {
+  background: linear-gradient(135deg, var(--indigo), var(--purple));
+  border: none;
+  border-radius: 6px;
+}
+.rbc-toolbar {
+  margin-bottom: 16px;
+}
+.rbc-toolbar button {
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 6px 14px;
+  font-size: 13px;
+  transition: all 0.15s ease;
+}
+.rbc-toolbar button:hover {
+  background: #F5F3FC;
+  border-color: var(--indigo);
+}
+.rbc-toolbar button.rbc-active {
+  background: linear-gradient(135deg, var(--indigo), var(--purple));
+  color: white;
+  border: none;
+}
+.rbc-toolbar-label {
+  font-weight: 600;
+  color: var(--ink);
+}
+.rbc-header {
+  padding: 8px 0;
+  font-weight: 600;
+  color: #8B8FA3;
+  border-color: var(--line) !important;
+}
+.rbc-off-range-bg {
+  background: #FAFAFB;
+}
+.rbc-month-view, .rbc-day-bg {
+  border-color: var(--line) !important;
+}
+
+.rbc-month-view {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.rbc-date-cell {
+  padding: 6px 8px;
+  font-size: 13px;
+  color: var(--ink);
+}
+.rbc-date-cell.rbc-now {
+  font-weight: 700;
+}
+.rbc-date-cell.rbc-now > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo), var(--purple));
+  color: white !important;
+}
+.rbc-day-bg:hover {
+  background: #FAF9FE;
+}
+.rbc-event:hover {
+  filter: brightness(1.1);
+  cursor: pointer;
+}
