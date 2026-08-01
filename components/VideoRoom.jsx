@@ -21,28 +21,6 @@ export default function VideoRoom({ fetchToken }) {
     setJoining(true);
     setError("");
 
-    let hasAudio = true;
-    let hasVideo = true;
-
-    try {
-      const s = await navigator.mediaDevices.getUserMedia({ audio: true });
-      s.getTracks().forEach((t) => t.stop());
-    } catch {
-      hasAudio = false;
-    }
-    try {
-      const s = await navigator.mediaDevices.getUserMedia({ video: true });
-      s.getTracks().forEach((t) => t.stop());
-    } catch {
-      hasVideo = false;
-    }
-
-    if (!hasAudio && !hasVideo) {
-      setError("No camera or microphone was found on this device.");
-      setJoining(false);
-      return;
-    }
-
     try {
       const AgoraRTC = (await import("agora-rtc-sdk-ng")).default;
 
@@ -85,20 +63,30 @@ export default function VideoRoom({ fetchToken }) {
 
       const tracksToPublish = [];
 
-      if (hasAudio) {
-        const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-        localTracksRef.current.audioTrack = audioTrack;
-        tracksToPublish.push(audioTrack);
-      } else {
-        setMicOn(false);
-      }
+try {
+  const audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+  localTracksRef.current.audioTrack = audioTrack;
+  tracksToPublish.push(audioTrack);
+} catch (err) {
+  console.error("Mic track failed:", err.name, err.message);
+  setMicOn(false);
+}
 
-      if (hasVideo) {
-        const videoTrack = await AgoraRTC.createCameraVideoTrack();
-        localTracksRef.current.videoTrack = videoTrack;
-        tracksToPublish.push(videoTrack);
-      } else {
-        setCamOn(false);
+try {
+  const videoTrack = await AgoraRTC.createCameraVideoTrack();
+  localTracksRef.current.videoTrack = videoTrack;
+  tracksToPublish.push(videoTrack);
+} catch (err) {
+  console.error("Camera track failed:", err.name, err.message);
+  setCamOn(false);
+  setError(`Joined, but camera unavailable: ${err.message}`);
+}
+
+      if (tracksToPublish.length === 0) {
+        setError("No camera or microphone was found on this device.");
+        setJoining(false);
+        await client.leave();
+        return;
       }
 
       await client.publish(tracksToPublish);
