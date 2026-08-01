@@ -7,7 +7,7 @@
 > ⚠️ **Demo note:** Calls are capped at **2 minutes** (enforced both client-side and via Agora token expiry) to keep this public showcase's video API usage bounded. See [Why the 2-minute limit](#why-the-2-minute-limit) below.
 
 <!-- SCREENSHOT: hero/login split-panel screen -->
-![Login screen](./screenshots/login.png)
+![Login screen](./public/ss/login.png)
 
 ---
 
@@ -41,13 +41,13 @@
 - Fully responsive (distinct mobile/desktop layouts, not just scaled-down desktop)
 
 <!-- SCREENSHOT: dashboard with calendar -->
-![Dashboard](./screenshots/dashboard.png)
+![Dashboard](./public/ss/dashboard.png)
 
 <!-- SCREENSHOT: active video call with multiple tiles -->
-![Video call](./screenshots/call.png)
+![Video call](./public/ss/call.png)
 
 <!-- SCREENSHOT: instant meeting host/join screen -->
-![Instant meeting](./screenshots/instant-meeting.png)
+![Instant meeting](./public/ss/instant-meeting.png)
 
 ---
 
@@ -61,6 +61,48 @@
 | Video | Agora RTC SDK |
 | Styling | Tailwind CSS v4 |
 | Calendar UI | react-big-calendar |
+
+---
+
+## 🔀 How it works
+
+```mermaid
+flowchart TD
+    A["Visitor lands on /login"] --> B{"Choose a path"}
+
+    B -->|"Sign in / Sign up"| C["NextAuth: Google OAuth<br/>or email + password"]
+    C --> D["Dashboard: calendar,<br/>schedule form, upcoming list"]
+    D --> E["Schedule meeting<br/>title, time, invite emails"]
+    E --> F[("MongoDB: Meeting doc created<br/>hostId + roomId + participants")]
+    F --> G["Invite emails receive<br/>invite link"]
+    G --> H["Guest RSVPs<br/>no account needed"]
+
+    B -->|"Meet instantly"| I{"Host or Join?"}
+    I -->|"Host"| J["Enter name only"]
+    J --> K[("MongoDB: instant Meeting doc<br/>joinCode generated")]
+    K --> L["Redirected to call page"]
+    I -->|"Join"| M["Enter join code"]
+    M --> N["Enter name"]
+    N --> L
+
+    D -->|"Click a scheduled meeting"| O["Meeting room page"]
+    L --> P["VideoRoom component"]
+    O --> P
+
+    P --> Q{"POST token request"}
+    Q --> R{"Server checks:<br/>host/participant? time window valid?"}
+    R -->|"No"| S["403 - join refused"]
+    R -->|"Yes"| T["Agora RTC token issued<br/>2-min expiry"]
+    T --> U["Join Agora channel<br/>publish audio and video"]
+    U --> V["2-minute demo timer<br/>auto-ends call"]
+
+    style F fill:#2E3192,color:#fff
+    style K fill:#2E3192,color:#fff
+    style T fill:#9B4FC7,color:#fff
+    style S fill:#C1443C,color:#fff
+```
+
+**The one security-relevant path to notice:** every route into `VideoRoom` — whether from a scheduled meeting or an instant one — passes through the same server-side check before a video token is ever issued. The client never decides whether someone is allowed into a call; the server does, at the moment the token is requested.
 
 ---
 
@@ -100,6 +142,16 @@ Visit `http://localhost:3000`.
 ## Why the 2-minute limit
 
 This project is deployed publicly as a portfolio piece. Unrestricted video calls on a public demo could be used by anyone to run indefinite Agora sessions against my API credentials. Capping call duration keeps the showcase safe to leave live without incurring runaway usage — the underlying code supports arbitrary-length calls (see `CALL_LIMIT_SECONDS` in `components/VideoRoom.jsx` and `expireSeconds` in `lib/agora.js`) and the limit is simply a configuration value for this deployment.
+
+---
+
+## 👤 Author
+
+**Manan Patel** *JavaScript Developer | Full-Stack Web Developer Node.js · React.js · TypeScript*
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/manan-patel-dev)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/manan-js-dev)
+[![Email](https://img.shields.io/badge/manan.js.dev@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:manan.js.dev@gmail.com)
 
 ---
 
