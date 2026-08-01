@@ -32,7 +32,7 @@ export default function CallPage({ params }) {
               alt="मिलनम्"
               width={90}
               height={50}
-              style={{ width: "auto", height: "32px" }}
+              style={{ width: "auto", height: "60px" }}
             />
           </div>
           <h1
@@ -84,7 +84,7 @@ export default function CallPage({ params }) {
             alt="मिलनम्"
             width={80}
             height={45}
-            style={{ width: "auto", height: "24px" }}
+            style={{ width: "auto", height: "60px" }}
           />
           <span className="text-white/30">|</span>
           <h1 className="text-white text-sm font-medium">

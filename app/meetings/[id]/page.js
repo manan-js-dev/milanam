@@ -54,7 +54,7 @@ export default function MeetingRoomPage({ params }) {
             alt="मिलनम्"
             width={80}
             height={45}
-            style={{ width: "auto", height: "24px" }}
+            style={{ width: "auto", height: "60px" }}
           />
           <span className="text-white/30">|</span>
           <h1 className="text-white text-sm font-medium">{meeting.title}</h1>

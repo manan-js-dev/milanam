@@ -86,7 +86,7 @@ export default function InvitePage({ params }) {
               className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
               style={{ background: "#F1EEFC", color: "var(--indigo)" }}
             >
-              You're invited
+              You&apos;re invited
             </span>
             <h1
               className="text-xl font-display mb-2"
