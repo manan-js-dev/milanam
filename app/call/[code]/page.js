@@ -3,12 +3,15 @@
 import { use, useState } from "react";
 import Image from "next/image";
 import VideoRoom from "@/components/VideoRoom";
+import { useSearchParams } from "next/navigation";
 
 export default function CallPage({ params }) {
   const { code } = use(params);
+  const searchParams = useSearchParams();
+  const nameFromUrl = searchParams.get("name");
+
   const [name, setName] = useState("");
-  const [confirmedName, setConfirmedName] = useState("");
-  const [error, setError] = useState("");
+  const [confirmedName, setConfirmedName] = useState(nameFromUrl || "");
 
   function handleContinue(e) {
     e.preventDefault();

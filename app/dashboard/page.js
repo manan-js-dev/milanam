@@ -23,6 +23,7 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadMeetings();
   }, []);
 
@@ -123,7 +124,18 @@ export default function DashboardPage() {
                   type="datetime-local"
                   required
                   value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
+                  onChange={(e) => {
+                    const start = e.target.value;
+                    setStartTime(start);
+                    if (start) {
+                      const startDate = new Date(start);
+                      const endDate = new Date(startDate.getTime() + 2 * 60000);
+                      // Format as "YYYY-MM-DDTHH:mm" — what a datetime-local input expects
+                      const pad = (n) => String(n).padStart(2, "0");
+                      const formatted = `${endDate.getFullYear()}-${pad(endDate.getMonth() + 1)}-${pad(endDate.getDate())}T${pad(endDate.getHours())}:${pad(endDate.getMinutes())}`;
+                      setEndTime(formatted);
+                    }
+                  }}
                   className="w-full px-3.5 py-2.5 rounded-xl text-sm mt-1 focus:outline-none focus:ring-2"
                   style={inputStyle}
                 />
@@ -135,11 +147,18 @@ export default function DashboardPage() {
                 <input
                   type="datetime-local"
                   required
+                  readOnly
                   value={endTime}
-                  onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl text-sm mt-1 focus:outline-none focus:ring-2"
-                  style={inputStyle}
+                  className="w-full px-3.5 py-2.5 rounded-xl text-sm mt-1 focus:outline-none"
+                  style={{
+                    ...inputStyle,
+                    background: "#F5F4FA",
+                    cursor: "not-allowed",
+                  }}
                 />
+                <p className="text-xs mt-1" style={{ color: "#B4B7C6" }}>
+                  Fixed to a 2-minute window for this demo.
+                </p>
               </div>
               <input
                 placeholder="Invite by email, comma separated"
@@ -204,24 +223,31 @@ export default function DashboardPage() {
                 {upcoming.map((m) => {
                   const live = isLive(m);
                   return (
-                          <li key={m._id}>
-                            {live ? (
-                                <Link
-                                  href={`/meetings/${m._id}`}
-                                  className="block rounded-xl px-3.5 py-2.5 transition-colors hover:opacity-90"
-                                  style={{ background: 'linear-gradient(135deg, var(--indigo), var(--purple))', border: 'none' }}
-                                >
-                                  <MeetingRow meeting={m} live />
-                                </Link>
-                            ) : (
-                              <div
-                                className="rounded-xl px-3.5 py-2.5"
-                                style={{ border: '1px solid var(--line)', cursor: 'default' }}
-                              >
-                                <MeetingRow meeting={m} live={false} />
-                              </div>
-                            )}
-                          </li>
+                    <li key={m._id}>
+                      {live ? (
+                        <Link
+                          href={`/meetings/${m._id}`}
+                          className="block rounded-xl px-3.5 py-2.5 transition-colors hover:opacity-90"
+                          style={{
+                            background:
+                              "linear-gradient(135deg, var(--indigo), var(--purple))",
+                            border: "none",
+                          }}
+                        >
+                          <MeetingRow meeting={m} live />
+                        </Link>
+                      ) : (
+                        <div
+                          className="rounded-xl px-3.5 py-2.5"
+                          style={{
+                            border: "1px solid var(--line)",
+                            cursor: "default",
+                          }}
+                        >
+                          <MeetingRow meeting={m} live={false} />
+                        </div>
+                      )}
+                    </li>
                   );
                 })}
               </ul>

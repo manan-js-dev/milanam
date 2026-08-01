@@ -19,9 +19,16 @@ export async function POST(request) {
       { status: 400 },
     );
   }
-  if (new Date(endTime) <= new Date(startTime)) {
+  const durationMs = new Date(endTime) - new Date(startTime);
+  if (durationMs <= 0) {
     return NextResponse.json(
       { error: "endTime must be after startTime" },
+      { status: 400 },
+    );
+  }
+  if (durationMs > 2 * 60 * 1000) {
+    return NextResponse.json(
+      { error: "Meetings are limited to 2 minutes for this demo." },
       { status: 400 },
     );
   }

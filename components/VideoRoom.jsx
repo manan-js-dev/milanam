@@ -14,6 +14,9 @@ export default function VideoRoom({ fetchToken }) {
   const [error, setError] = useState("");
   const [joining, setJoining] = useState(false);
 
+  const CALL_LIMIT_SECONDS = 120;
+  const [timeLeft, setTimeLeft] = useState(CALL_LIMIT_SECONDS);
+
   async function joinCall() {
     setJoining(true);
     setError("");
@@ -99,6 +102,7 @@ export default function VideoRoom({ fetchToken }) {
       }
 
       await client.publish(tracksToPublish);
+      setTimeLeft(CALL_LIMIT_SECONDS);
       setJoined(true);
     } catch (err) {
       console.error(err);
@@ -142,6 +146,23 @@ export default function VideoRoom({ fetchToken }) {
     };
   }, []);
 
+  useEffect(() => {
+    if (!joined) return;
+
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          leaveCall();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [joined]);
+
   if (!joined) {
     return (
       <div className="flex flex-col items-center gap-5">
@@ -177,6 +198,21 @@ export default function VideoRoom({ fetchToken }) {
 
   return (
     <div className="w-full max-w-5xl">
+      <div className="text-center mb-3">
+        <span
+          className="text-xs font-medium px-3 py-1 rounded-full"
+          style={{
+            background:
+              timeLeft <= 30
+                ? "rgba(193,68,60,0.15)"
+                : "rgba(255,255,255,0.08)",
+            color: timeLeft <= 30 ? "#FF8A80" : "rgba(255,255,255,0.6)",
+          }}
+        >
+          Demo limit — {Math.floor(timeLeft / 60)}:
+          {String(timeLeft % 60).padStart(2, "0")} remaining
+        </span>
+      </div>
       <div className={`grid ${gridCols} gap-3`}>
         <VideoTile
           ref={localVideoRef}
