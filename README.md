@@ -7,7 +7,7 @@
 > ⚠️ **Demo note:** Calls are capped at **2 minutes** (enforced both client-side and via Agora token expiry) to keep this public showcase's video API usage bounded. See [Why the 2-minute limit](#why-the-2-minute-limit) below.
 
 <!-- SCREENSHOT: hero/login split-panel screen -->
-![Login screen](./screenshots/login.png)
+![Login screen](./public/ss/login.png)
 
 ---
 
@@ -41,13 +41,13 @@
 - Fully responsive (distinct mobile/desktop layouts, not just scaled-down desktop)
 
 <!-- SCREENSHOT: dashboard with calendar -->
-![Dashboard](./screenshots/dashboard.png)
+![Dashboard](./public/ss/dashboard.png)
 
 <!-- SCREENSHOT: active video call with multiple tiles -->
-![Video call](./screenshots/call.png)
+![Video call](./public/ss/call.png)
 
 <!-- SCREENSHOT: instant meeting host/join screen -->
-![Instant meeting](./screenshots/instant-meeting.png)
+![Instant meeting](./public/ss/instant-meeting.png)
 
 ---
 
