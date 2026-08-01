@@ -6,6 +6,8 @@
 
 > ⚠️ **Demo note:** Calls are capped at **2 minutes** (enforced both client-side and via Agora token expiry) to keep this public showcase's video API usage bounded. See [Why the 2-minute limit](#why-the-2-minute-limit) below.
 
+### 🔗 [Live Demo](https://milanam-khaki.vercel.app/)
+
 <!-- SCREENSHOT: hero/login split-panel screen -->
 ![Login screen](./public/ss/login.png)
 
