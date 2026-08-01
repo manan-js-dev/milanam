@@ -18,11 +18,10 @@ const MeetingSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
     description: { type: String, default: "" },
-    hostId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    hostId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    hostName: { type: String },
+    isInstant: { type: Boolean, default: false },
+    joinCode: { type: String, unique: true, sparse: true }, 
     participants: { type: [ParticipantSchema], default: [] },
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },

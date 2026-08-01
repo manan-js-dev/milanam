@@ -60,7 +60,7 @@ export default function Navbar() {
             </span>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={() => signOut({ callbackUrl: "/login" })}
             className="text-sm px-3.5 py-1.5 rounded-lg font-medium transition-colors hover:bg-gray-50"
             style={{ border: "1px solid var(--line)", color: "var(--ink)" }}
           >

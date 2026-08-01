@@ -50,7 +50,7 @@ export async function POST(request) {
     );
   }
 
-  const uid = parseInt(session.user.id.slice(-6), 16) % 100000;
+  const uid = Math.floor(Math.random() * 100000) + 1;
   const token = generateRtcToken(meeting.roomId, uid);
 
   return NextResponse.json({
