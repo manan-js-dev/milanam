@@ -18,10 +18,12 @@ export default function LoginPage() {
   const [joinCode, setJoinCode] = useState("");
   const [instantError, setInstantError] = useState("");
   const [instantSubmitting, setInstantSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
     const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,6 +32,7 @@ export default function LoginPage() {
     const data = await res.json();
     if (!res.ok) {
       setError(data.error);
+      setSubmitting(false);
       return;
     }
     const loginRes = await signIn("credentials", {
@@ -39,6 +42,7 @@ export default function LoginPage() {
     });
     if (loginRes?.error) {
       setError("Account created, but automatic sign-in failed.");
+      setSubmitting(false);
     } else {
       router.push("/dashboard");
     }
@@ -47,6 +51,7 @@ export default function LoginPage() {
   async function handleSignin(e) {
     e.preventDefault();
     setError("");
+    setSubmitting(true);
     const res = await signIn("credentials", {
       email,
       password,
@@ -54,6 +59,7 @@ export default function LoginPage() {
     });
     if (res?.error) {
       setError("Invalid email or password.");
+      setSubmitting(false);
     } else {
       router.push("/dashboard");
     }
@@ -373,14 +379,21 @@ export default function LoginPage() {
 
                 <button
                   type="submit"
-                  className="rounded-xl py-3 text-sm font-semibold text-white mt-1 transition-transform hover:scale-[1.02] active:scale-[0.98]"
+                  disabled={submitting}
+                  className="rounded-xl py-3 text-sm font-semibold text-white mt-1 transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     background:
                       "linear-gradient(135deg, var(--indigo), var(--purple))",
                     boxShadow: "0 10px 25px -8px rgba(46,49,146,0.5)",
                   }}
                 >
-                  {mode === "signin" ? "Sign in" : "Create account"}
+                  {submitting
+                    ? mode === "signin"
+                      ? "Signing in…"
+                      : "Creating account…"
+                    : mode === "signin"
+                      ? "Sign in"
+                      : "Create account"}
                 </button>
               </form>
 
